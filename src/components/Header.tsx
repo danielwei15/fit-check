@@ -43,6 +43,9 @@ export default function Header() {
               Everything Else
             </a>
             <a href="#" className="hover:underline underline-offset-2">
+              Sale
+            </a>
+            <a href="#" className="hover:underline underline-offset-2">
               Search
             </a>
           </nav>

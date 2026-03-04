@@ -1,6 +1,3 @@
-"use client";
-
-import { useState } from "react";
 import Image from "next/image";
 
 const productImages = [
@@ -11,47 +8,24 @@ const productImages = [
 ];
 
 export default function ProductGallery() {
-  const [activeIndex, setActiveIndex] = useState(0);
-
-  const goToNext = () => {
-    setActiveIndex((prev) => (prev + 1) % productImages.length);
-  };
-
-  const goToPrev = () => {
-    setActiveIndex((prev) => (prev - 1 + productImages.length) % productImages.length);
-  };
-
   return (
-    <div className="relative">
-      {/* Main Image Container */}
-      <div
-        className="relative bg-white cursor-pointer select-none"
-        onClick={goToNext}
-        style={{ aspectRatio: "3/4" }}
-      >
-        <Image
-          src={productImages[activeIndex]}
-          alt="RECODE Black Jacket Patch Blazer"
-          fill
-          className="object-contain"
-          priority
-          sizes="(max-width: 1024px) 100vw, 60vw"
-        />
-      </div>
-
-      {/* Pagination Dots */}
-      <div className="flex justify-center gap-3 mt-6">
-        {productImages.map((_, index) => (
-          <button
-            key={index}
-            onClick={() => setActiveIndex(index)}
-            className={`w-8 h-[2px] transition-colors duration-200 ${
-              activeIndex === index ? "bg-black" : "bg-gray-300 hover:bg-gray-400"
-            }`}
-            aria-label={`View image ${index + 1}`}
+    <div className="flex flex-col">
+      {productImages.map((src, index) => (
+        <div
+          key={src}
+          className="relative bg-white"
+          style={{ aspectRatio: "3/4" }}
+        >
+          <Image
+            src={src}
+            alt={`RECODE Black Jacket Patch Blazer - Image ${index + 1}`}
+            fill
+            className="object-contain"
+            priority={index === 0}
+            sizes="(max-width: 1024px) 100vw, 55vw"
           />
-        ))}
-      </div>
+        </div>
+      ))}
     </div>
   );
 }
