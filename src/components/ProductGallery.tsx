@@ -25,8 +25,10 @@ export default function ProductGallery({ images, onUpload }: ProductGalleryProps
 
   const handleFiles = (files: FileList | null) => {
     if (!files) return;
-    const imageFiles = Array.from(files).filter((f) => f.type.startsWith("image/"));
-    if (imageFiles.length > 0) onUpload(imageFiles);
+    const mediaFiles = Array.from(files).filter(
+      (f) => f.type.startsWith("image/") || f.type.startsWith("video/"),
+    );
+    if (mediaFiles.length > 0) onUpload(mediaFiles);
   };
 
   const handleDragEnter = (e: React.DragEvent) => {
@@ -71,7 +73,7 @@ export default function ProductGallery({ images, onUpload }: ProductGalleryProps
           ref={inputRef}
           type="file"
           multiple
-          accept="image/*"
+          accept="image/*,video/*"
           className="hidden"
           onChange={(e) => handleFiles(e.target.files)}
         />
@@ -91,7 +93,7 @@ export default function ProductGallery({ images, onUpload }: ProductGalleryProps
           <polyline points="21 15 16 10 5 21" />
         </svg>
         <p className="text-[11px] uppercase tracking-[0.12em] text-black font-medium mb-1.5">
-          Drop images here
+          Drop images or videos here
         </p>
         <p className="text-[11px] text-[#999] tracking-[0.06em]">or click to browse</p>
       </div>
@@ -106,12 +108,25 @@ export default function ProductGallery({ images, onUpload }: ProductGalleryProps
           className="relative bg-white"
           style={{ aspectRatio: "3/4" }}
         >
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img
-            src={src}
-            alt={`Uploaded image ${index + 1}`}
-            className="w-full h-full object-contain"
-          />
+          {images[index]?.type.startsWith("video/") ? (
+            <video
+              src={src}
+              autoPlay
+              loop
+              muted
+              playsInline
+              className="w-full h-full object-contain"
+            >
+              <track kind="captions" />
+            </video>
+          ) : (
+            // eslint-disable-next-line @next/next/no-img-element
+            <img
+              src={src}
+              alt={`Uploaded image ${index + 1}`}
+              className="w-full h-full object-contain"
+            />
+          )}
         </div>
       ))}
     </div>
